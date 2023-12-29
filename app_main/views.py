@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.generics import *
 from .serializers import *
 
 class SuvModelViewSet(ModelViewSet):
@@ -20,19 +21,28 @@ class BuyurtmaModelViewSet(ModelViewSet):
     serializer_class = BuyurtmaSerializer
 
 
-class AdminModelViewSet(ModelViewSet):
+class AdminListAPIView(ListAPIView):
     queryset = Admin.objects.all()
     serializer_class = AdminSerializer
 
-    def update(self, request):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+class AdminRetrieveAPIView(RetrieveAPIView):
+    serializer_class = AdminSerializer
 
-    def create(self, request):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    def get_object(self):
+        obj = get_object_or_404(Admin, id=self.kwargs['pk'])
+        return obj
 
 
-class HaydovchiModelViewSet(ModelViewSet):
+
+class HaydovchiListAPIView(ListAPIView):
     queryset = Haydovchi.objects.all()
     serializer_class = HaydovchiSerializer
+
+class HaydovchiRetrieveAPIView(RetrieveAPIView):
+    serializer_class = HaydovchiSerializer
+
+    def get_object(self):
+        obj = get_object_or_404(Haydovchi, id=self.kwargs['pk'])
+        return obj
 
 
